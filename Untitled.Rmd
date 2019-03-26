@@ -1,19 +1,28 @@
 ---
-title: "class-03-26-19"
-author: "Albert Shin"
+title: "Data Analysis on Stanford Open Policing Project Data"
+author: "Albert Shin & Seeam Noor"
 date: "3/26/2019"
 output: html_document
 ---
-```{r seutp}
+```{r seutp, warning = FALSE, error = FALSE, message = FALSE, echo = FALSE}
 library(tidyverse)
+library(gt)
 ```
 
-```{r cars, message=FALSE, echo=FALSE}
-data <- tr137st9964_ct_hartford_2019_02_25
-data %>% 
-  group_by(subject_race) %>% 
-  count(reason_for_stop)
+```{r analysis, message=FALSE, echo = FALSE, warning = FALSE}
+
+data_main <- read_rds('tr137st9964_ct_hartford_2019_02_25.rds')
+data_main %>% group_by(subject_race, district) %>% 
+  filter(arrest_made == TRUE) %>%
+  count(arrest_made) %>%
+  ungroup() %>%
+  select(-arrest_made) %>%
+  rename("Race" = subject_race, "District" = district) %>%
+  spread(key = Race, value = n) %>%
+  gt() %>%
+  tab_header(
+      title = "Number of arrests made by race and district")
 
 ```
 
-The first day in the data is `r data %>% arrange(date) %>% select(date) %>% slice(1)`
+The first day in the data is `r data_main %>% arrange(date) %>% select(date) %>% slice(1)`
