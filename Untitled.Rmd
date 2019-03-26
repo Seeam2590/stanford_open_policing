@@ -18,7 +18,7 @@ data_main %>% group_by(subject_race, district) %>%
   ungroup() %>%
   select(-arrest_made) %>%
   rename("Race" = subject_race, "District" = district) %>%
-  spread(key = Race, value = n) %>%
+  spread(key = Race, value = n, fill = 0) %>%
   gt() %>%
   tab_header(
       title = "Number of arrests made by race and district")
