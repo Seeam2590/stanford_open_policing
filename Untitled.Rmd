@@ -4,6 +4,16 @@ author: "Albert Shin"
 date: "3/26/2019"
 output: html_document
 ---
+```{r seutp}
+library(tidyverse)
+```
+
 ```{r cars, message=FALSE, echo=FALSE}
+data <- tr137st9964_ct_hartford_2019_02_25
+data %>% 
+  group_by(subject_race) %>% 
+  count(reason_for_stop)
 
 ```
+
+The first day in the data is `r data %>% arrange(date) %>% select(date) %>% slice(1)`
