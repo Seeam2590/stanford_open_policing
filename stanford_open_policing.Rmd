@@ -10,15 +10,22 @@ library(gt)
 ```
 
 ```{r analysis, message=FALSE, echo = FALSE, warning = FALSE}
-
+# Reading an R object as our data
 data_main <- read_rds('tr137st9964_ct_hartford_2019_02_25.rds')
-data_main %>% group_by(subject_race, district) %>% 
+
+data_main %>%
+  # Grouping by race and district
+  group_by(subject_race, district) %>%
+  # Only considering when arrests happened
   filter(arrest_made == TRUE) %>%
+  # Counting the arrests made in each group
   count(arrest_made) %>%
   ungroup() %>%
   select(-arrest_made) %>%
+  # Giving appropriate labels to columns
   rename("Race" = subject_race, "District" = district) %>%
   spread(key = Race, value = n, fill = 0) %>%
+  # Making a table using the GT function
   gt() %>%
   tab_header(
       title = "Number of arrests made by race and district")
